@@ -110,7 +110,9 @@ static void spell_check(const_gimple stmt, const_tree str)
     const char *data, *end;
 
     data = TREE_STRING_POINTER(str);
+#ifdef DEBUG
     printf("Spell checking string: \'%s\'\n", data);
+#endif
 
     while (*data)
     {
