@@ -1,0 +1,65 @@
+spellhell: GCC-plugin to spell check string literals
+====================================================
+
+What
+----
+Ok, so you have that fancy new piece of software done!  By done, I mean:
+compiled, tested, packaged, and distributed to the most honorable of your
+customers.  But wait! Did you even spell check the output?  Well, have no fear
+my GCC loving monkey boy, as that is what spellhell is for!  Spellhell is a GCC
+plugin that runs a program's string literals through aspell such that
+misspellings will generate a compile warning.
+
+This work was originally created as a simple example for an introductory article
+I wrote on how to create GCC plugins.  This version is slightly different from what
+was originally written.
+<https://lwn.net/Articles/457543/>
+
+
+Dependencies
+------------
+GCC version 4.5 introduced plugins.  The most recent version of spellhell has
+been built and tested on 4.8 thus, for older versions, your mileage might vary.
+
+
+Build
+-----
+This is a GCC plugin and uses the plugin framework built with g++ in version 4.8
+of GCC.  To build things simply run `make' from the spellhell directory.
+
+
+Use
+---
+Next time you build with GCC 4.8 or higher include the spellhell plugin by
+passing the '-fplugin=spellhell.so' flag to GCC.
+
+GCC will emit a warning if a string contains a misspelling.  By default the
+LOCALE is set to en_US.  Oh, and if you are a masochist, run GCC with -Werror to
+terminate compilation if a misspelling occurs.
+
+
+Caveat
+------
+If you run your PhD dissertation through this and you still get no spelling
+warnings, clearly you have been at things too long.  Go home!  In other words,
+if you rely on this 100% for spelling accuracy, don't blame me when your
+users submit bug tickets with your spelling mistakes.
+
+
+Install
+-------
+GCC must know where spellhell.so is located in order to use it.
+You can install this plugin where GCC  recognizes your other plugins by copying
+spellhell.so there.  The common plugin directory can be found by issuing the
+following argument to GCC: `gcc -print-file-name=plugin'  You will still have to
+issue the '-fplugin=spellhell.so' flag for the magic to get rockin'.
+
+But wait, what's easier is that you can merely specify the full path to the
+plugin when you compile your program:
+`gcc foo.c -fplugin=/path/to/spellhell.so'
+
+
+Contact
+-------
+Matt Davis (enferex)
+mattdavis9@gmail.com
