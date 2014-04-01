@@ -7,7 +7,7 @@ CFLAGS += -I$(PLUGINS_DIR)/include -fPIC -laspell
 # I use this for debugging. 
 # The following path contains a version of gcc with debug
 # symbols and no optimization.
-GCCPATH=~/proj/gcc-4.8.0-obj/
+#GCCPATH = ~/proj/gcc-4.8.0-obj/
 
 $(PLUGIN): $(OBJS)
 	$(CC) -shared $^ -o $@ $(CFLAGS)
@@ -15,9 +15,9 @@ $(PLUGIN): $(OBJS)
 test: $(PLUGIN) test.c
 	$(CC) -fplugin=./$(PLUGIN) test.c -o $@ -Wno-write-strings
 
-debug: $(DBG_PLUGIN)
-	exec gdb --args $(GCCPATH)/gcc/cc1 \
-        -fplugin=./$(PLUGIN) test.c -I$(GCCPATH)/gcc/include
+#debug: $(DBG_PLUGIN)
+#	exec gdb --args $(GCCPATH)/gcc/cc1 \
+#        -fplugin=./$(PLUGIN) test.c -I$(GCCPATH)/gcc/include
 
 clean:
 	$(RM) $(OBJS) $(PLUGIN) test
