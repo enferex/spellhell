@@ -20,6 +20,8 @@ Dependencies
 ------------
 GCC version 4.5 introduced plugins.  The most recent version of spellhell has
 been built and tested on 4.8 thus, for older versions, your mileage might vary.
+Apsell is also required, you probably already have it, if not:
+<http://www.aspell.net>.
 
 
 Build
