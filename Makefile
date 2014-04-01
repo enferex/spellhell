@@ -2,7 +2,7 @@ CC=g++
 PLUGIN = spellhell.so
 OBJS = spellhell.o
 PLUGINS_DIR = $(shell $(CC) -print-file-name=plugin)
-CFLAGS += -I$(PLUGINS_DIR)/include -fPIC -O0 -g3 -laspell
+CFLAGS += -I$(PLUGINS_DIR)/include -fPIC -laspell
 
 # I use this for debugging. 
 # The following path contains a version of gcc with debug
