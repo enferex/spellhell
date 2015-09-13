@@ -24,10 +24,14 @@
 #include <gcc-plugin.h>
 #include <coretypes.h>
 #include <diagnostic.h>
-#include <gimple.h>
 #include <tree.h>
-#include <tree-flow.h>
 #include <tree-pass.h>
+#include <cgraph.h>
+#include <gimple-expr.h>
+#include <tree-ssa-alias.h>
+#include <internal-fn.h>
+#include <gimple.h>
+#include <gimple-iterator.h>
 
 
 /* Locale to use when spell checking */
@@ -154,7 +158,7 @@ static void spellhell_exec(void *gcc_data, void *user_data)
 
     FOR_EACH_FUNCTION(node)
     {
-        if (!(fn = DECL_STRUCT_FUNCTION(node->symbol.decl)))
+        if (!(fn = DECL_STRUCT_FUNCTION(node->decl)))
           continue;
 
         FOR_EACH_BB_FN(bb, fn)
