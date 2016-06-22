@@ -108,7 +108,7 @@ static AspellSpeller *init_spellchecker(void)
 }
 
 
-static void spell_check(const_gimple stmt, const_tree str)
+static void spell_check(const gimple *stmt, const_tree str)
 {
     char buf[32] = {0};
     const char *data, *end;
@@ -153,7 +153,7 @@ static void spellhell_exec(void *gcc_data, void *user_data)
     struct cgraph_node *node;
     const_tree str, op;
     basic_block bb;
-    gimple stmt;
+    const gimple *stmt;
     gimple_stmt_iterator gsi;
 
     FOR_EACH_FUNCTION(node)
