@@ -32,6 +32,8 @@
 #include <internal-fn.h>
 #include <gimple.h>
 #include <gimple-iterator.h>
+#include <rtl.h>
+#include <expr.h>
 
 
 /* Locale to use when spell checking */
@@ -61,31 +63,36 @@ static bool spellhell_gate(void)
 }
 
 
-/* Given a node in the syntax tree, determine if it is a string literal */
-static const_tree is_str_cst(const_tree node)
+static tree find_str_cst(tree node)
 {
-    const_tree str = node;
+    tree offset;
 
-    /* Filter out types we are ignoring */
-    if (TREE_CODE(str) == VAR_DECL)
-    {
-        if (!(str = DECL_INITIAL(node)))
-          return NULL_TREE;
-        else if (TREE_OPERAND_LENGTH(str))
-          str = TREE_OPERAND(str, 0);
-    }
-    else if (TREE_CODE(str) == ADDR_EXPR &&
-             TREE_OPERAND_LENGTH(str) > 0)
-      str = TREE_OPERAND(str, 0);
-
-    if (TREE_CODE(str) != STRING_CST &&
-        TREE_OPERAND_LENGTH(str) > 0)
-      str = TREE_OPERAND(str, 0);
-
-    if (TREE_CODE(str) != STRING_CST)
+    if (!node)
       return NULL_TREE;
-    else
+
+    else if (TREE_CODE(node) == STRING_CST)
+      return node;
+
+    else 
+      return string_constant(node, &offset);
+}
+
+
+static tree is_str_cst(tree node)
+{
+    tree str = NULL;
+
+    if ((str = find_str_cst(node)))
       return str;
+
+    for (int i=0; i<TREE_OPERAND_LENGTH(node); ++i)
+    {
+        tree operand = TREE_OPERAND(node, i);
+        if (operand && (str = find_str_cst(operand)))
+          return str;
+    }
+
+    return NULL;
 }
 
 
@@ -151,7 +158,7 @@ static void spellhell_exec(void *gcc_data, void *user_data)
     unsigned i;
     struct function *fn;
     struct cgraph_node *node;
-    const_tree str, op;
+    tree str, op;
     basic_block bb;
     const gimple *stmt;
     gimple_stmt_iterator gsi;
