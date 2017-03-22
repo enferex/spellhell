@@ -63,36 +63,16 @@ static bool spellhell_gate(void)
 }
 
 
-static tree find_str_cst(tree node)
+static tree is_str_cst(tree node)
 {
     tree offset;
 
     if (!node)
       return NULL_TREE;
-
     else if (TREE_CODE(node) == STRING_CST)
       return node;
-
     else 
       return string_constant(node, &offset);
-}
-
-
-static tree is_str_cst(tree node)
-{
-    tree str = NULL;
-
-    if ((str = find_str_cst(node)))
-      return str;
-
-    for (int i=0; i<TREE_OPERAND_LENGTH(node); ++i)
-    {
-        tree operand = TREE_OPERAND(node, i);
-        if (operand && (str = find_str_cst(operand)))
-          return str;
-    }
-
-    return NULL;
 }
 
 
