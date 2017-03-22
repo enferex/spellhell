@@ -163,7 +163,7 @@ static void spellhell_exec(void *gcc_data, void *user_data)
     const gimple *stmt;
     gimple_stmt_iterator gsi;
 
-    FOR_EACH_FUNCTION(node)
+    FOR_EACH_FUNCTION_WITH_GIMPLE_BODY(node)
     {
         if (!(fn = DECL_STRUCT_FUNCTION(node->decl)))
           continue;
